@@ -1,2 +1,2 @@
-##Project for CPSC-223P
+## Project for CPSC-223P
 Reaction timer written in python
