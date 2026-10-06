@@ -1,14 +1,18 @@
 import tkinter as tk
+from enum import Enum
 
-root = tk.Tk()
-
-tk.Label(root, text="Username").grid(row=0, column=0)
-tk.Label(root, text="Password").grid(row=1, column=0)
-
-entry1 = tk.Entry(root)
-entry2 = tk.Entry(root)
-
-entry1.grid(row=0, column=1)
-entry2.grid(row=1, column=1)
-
-root.mainloop()
+#the program states will have frames associated with them
+class ProgramState(Enum):
+	MainMenu = 0
+	Login = 1
+	Application = 2
+	Highscore = 3
+ 
+class ReactionApp(tk.Tk):
+	def __init__(self):
+		super().__init__()
+		self.title("Reaction App")
+ 
+if __name__ == "__main__":
+	app = ReactionApp()
+	app.mainloop()
