@@ -1,12 +1,7 @@
 import tkinter as tk
 from mainMenu import MainMenu 
-from enum import Enum, auto
-
-class ProgramState(Enum):
-	MainMenu = auto()
-	Login = auto()
-	Application = auto()
-	Highscore = auto()
+from application import Application
+from programState import ProgramState
 
 class ReactionApp(tk.Tk):
 	def __init__(self):
@@ -29,11 +24,8 @@ class ReactionApp(tk.Tk):
 		if self.state == ProgramState.MainMenu:
 			self.frame = MainMenu(self)
 
-		elif self.state == ProgramState.Login:
-			self.frame = MainMenu(self)
-
 		elif self.state == ProgramState.Application:
-			self.frame = MainMenu(self)
+			self.frame = Application(self)
 
 		elif self.state == ProgramState.Highscore:
 			self.frame = MainMenu(self)

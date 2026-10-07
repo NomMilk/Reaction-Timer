@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter.messagebox import showinfo
 from programState import ProgramState
 
-class MainMenu(ttk.Frame):
+class Application(ttk.Frame):
 	def __init__(self, container):
 		super().__init__(container)
 		self.container = container
@@ -11,7 +11,7 @@ class MainMenu(ttk.Frame):
 		options = {'padx': 5, 'pady': 5}
 
 		# label
-		self.label = ttk.Label(self, text='Hello, Tkinter!')
+		self.label = ttk.Label(self, text='Bye, Tkinter!')
 		self.label.pack(**options)
 
 		# button
@@ -23,4 +23,4 @@ class MainMenu(ttk.Frame):
 		self.pack(**options)
 
 	def button_clicked(self):
-		self.container.change_state(ProgramState.Application)
+		self.container.change_state(ProgramState.MainMenu)
