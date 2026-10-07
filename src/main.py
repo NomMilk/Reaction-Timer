@@ -1,12 +1,12 @@
 import tkinter as tk
 from mainMenu import MainMenu 
-from enum import Enum
+from enum import Enum, auto
 
 class ProgramState(Enum):
-	MainMenu = 0
-	Login = 1
-	Application = 2
-	Highscore = 3
+	MainMenu = auto()
+	Login = auto()
+	Application = auto()
+	Highscore = auto()
 
 class ReactionApp(tk.Tk):
 	def __init__(self):
