@@ -11,11 +11,11 @@ class MainMenu(ttk.Frame):
 		options = {'padx': 5, 'pady': 5}
 
 		# label
-		self.label = ttk.Label(self, text='Hello, Tkinter!')
+		self.label = ttk.Label(self, text='Reaction Timer')
 		self.label.pack(**options)
 
 		# button
-		self.button = ttk.Button(self, text='Click Me')
+		self.button = ttk.Button(self, text='Start')
 		self.button['command'] = self.button_clicked
 		self.button.pack(**options)
 

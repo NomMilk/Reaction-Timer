@@ -9,6 +9,7 @@ class ReactionApp(tk.Tk):
 
 		self.title("Reaction App")
 		self.geometry("800x600")
+		self.resizable(False, False)
 
 		self.state = ProgramState.MainMenu
 		self.frame = None
