@@ -23,6 +23,10 @@ class Application(ttk.Frame):
 		self.button['command'] = self.button_clicked
 		self.button.pack(**options)
 
+		self.button = ttk.Button(self, text='Back')
+		self.button['command'] = self.button_clicked
+		self.button.pack(**options)
+
 		# show the frame on the container
 		self.pack(**options)
 
