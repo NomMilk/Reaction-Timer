@@ -16,19 +16,19 @@ class Application(ttk.Frame):
 
 		# button
 		self.button = ttk.Button(self, text='Normal Mode')
-		self.button['command'] = self.button_clicked
+		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
 		self.button.pack(**options)
 
 		self.button = ttk.Button(self, text='Movement Mode')
-		self.button['command'] = self.button_clicked
+		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
 		self.button.pack(**options)
 
 		self.button = ttk.Button(self, text='Back')
-		self.button['command'] = self.button_clicked
+		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
 		self.button.pack(**options)
 
 		# show the frame on the container
 		self.pack(**options)
 
-	def button_clicked(self):
-		self.container.change_state(ProgramState.MainMenu)
+	def button_clicked(self, scene):
+		self.container.change_state(scene)

@@ -16,11 +16,15 @@ class MainMenu(ttk.Frame):
 
 		# button
 		self.button = ttk.Button(self, text='Start')
-		self.button['command'] = self.button_clicked
+		self.button['command'] = lambda: self.button_clicked(ProgramState.Application)
+		self.button.pack(**options)
+
+		self.button = ttk.Button(self, text='Highscore')
+		self.button['command'] = lambda: self.button_clicked(ProgramState.Highscore)
 		self.button.pack(**options)
 
 		# show the frame on the container
 		self.pack(**options)
 
-	def button_clicked(self):
-		self.container.change_state(ProgramState.Application)
+	def button_clicked(self, scene):
+		self.container.change_state(scene)

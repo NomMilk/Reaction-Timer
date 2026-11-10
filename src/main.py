@@ -1,4 +1,5 @@
 import tkinter as tk
+from highscore import Highscore
 from mainMenu import MainMenu 
 from application import Application
 from programState import ProgramState
@@ -28,8 +29,14 @@ class ReactionApp(tk.Tk):
 		elif self.state == ProgramState.Application:
 			self.frame = Application(self)
 
+		elif self.state == ProgramState.Normal:
+			self.frame = Application(self)
+
+		elif self.state == ProgramState.Advance:
+			self.frame = Application(self)
+
 		elif self.state == ProgramState.Highscore:
-			self.frame = MainMenu(self)
+			self.frame = Highscore(self)
 
 		self.frame.pack(fill="both", expand=True)
 
