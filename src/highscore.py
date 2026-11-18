@@ -16,15 +16,18 @@ class Highscore(ttk.Frame):
         inner = ttk.Frame(self)
         inner.place(relx=0.5, rely=0.5, anchor='center')
 
-        ttk.Label(inner, text='Fastest Times', font=("Arial", 18, "bold")).pack(**options)
+        ttk.Label(inner, text='Fastest Times', style='Heading.TLabel').pack(pady=(0, 10))
 
         for mode in MODES:
-            ttk.Label(inner, text=f'{mode} Mode', font=("Arial", 14, "bold")).pack(**options)
-            ttk.Label(inner, text=self.format_scores(mode), justify="center").pack(**options)
+            card = ttk.Frame(inner, style='Card.TFrame', padding=(24, 12))
+            card.pack(fill='x', **options)
+            ttk.Label(card, text=f'{mode} Mode', style='CardHeading.TLabel').pack(anchor='w', pady=(0, 6))
+            ttk.Label(card, text=self.format_scores(mode), style='Card.TLabel',
+                      justify="left").pack(anchor='w')
 
-        back_button = ttk.Button(inner, text='Back')
+        back_button = ttk.Button(inner, text='Back', width=22, cursor='hand2')
         back_button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
-        back_button.pack(**options)
+        back_button.pack(padx=5, pady=(14, 5))
 
         self.pack(fill='both', expand=True)
 

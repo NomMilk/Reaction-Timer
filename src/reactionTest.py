@@ -1,12 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
+import theme
 from programState import ProgramState
 from scores import calculate_stats, save_score
 
 ROUNDS = 5
 
 
-class ReactionTest(ttk.Frame):
+class ReactionTest(theme.Effects, ttk.Frame):
     """Shared screen for both game modes.
 
     It draws the rectangle, keeps the list of reaction times, and shows the
@@ -22,18 +23,19 @@ class ReactionTest(ttk.Frame):
         self.times = []            # reaction times in ms, one per finished round
         self.pending_job = None    # id of the timer waiting to fire, if any
 
-        self.info = ttk.Label(self, text="")
-        self.info.pack(padx=5, pady=5)
+        self.info = ttk.Label(self, text="", style="Info.TLabel")
+        self.info.pack(padx=5, pady=(16, 4))
 
-        self.message = ("white", "", "black")   # last message drawn, for redrawing on resize
+        self.message = (theme.SURFACE_ALT, "", theme.TEXT)   # last message drawn, for redrawing on resize
         self.canvas = tk.Canvas(self, width=600, height=350, highlightthickness=0)
-        self.canvas.pack(fill="both", expand=True, padx=5, pady=5)
+        self.canvas.pack(fill="both", expand=True, padx=24, pady=8)
         self.canvas.bind("<Button-1>", self.on_click)
         self.canvas.bind("<Configure>", self.redraw)
+        self.setup_effects()
 
-        self.quit_button = ttk.Button(self, text="Quit to Menu",
-                                      command=self.go_to_menu)
-        self.quit_button.pack(padx=5, pady=5)
+        self.quit_button = ttk.Button(self, text="Quit to Menu", width=18,
+                                      cursor="hand2", command=self.go_to_menu)
+        self.quit_button.pack(padx=5, pady=(8, 16))
 
     def start_round(self):
         """Begin one round. Written by each mode."""
@@ -57,9 +59,10 @@ class ReactionTest(ttk.Frame):
     def destroy(self):
         """Stop any timer before the screen is removed, so it cannot fire late."""
         self.cancel_pending()
+        self.cancel_effects()
         super().destroy()
 
-    def draw_message(self, color, text, text_color="white"):
+    def draw_message(self, color, text, text_color=theme.TEXT):
         """Remember a message, then fill the canvas with its color and centre the text."""
         self.message = (color, text, text_color)
         self.redraw()
@@ -68,11 +71,12 @@ class ReactionTest(ttk.Frame):
         """Draw the current message to fit the canvas. Also runs when the window is resized."""
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         color, text, text_color = self.message
-        self.canvas.delete("all")
-        self.canvas.create_rectangle(0, 0, width, height, fill=color, outline=color)
+        self.draw_panel(width, height, color)
         self.canvas.create_text(width / 2, height / 2, text=text, fill=text_color,
-                                font=("Arial", max(16, height // 14), "bold"),
-                                width=max(100, width - 40), justify="center")
+                                font=(theme.FONT, max(16, height // 14), "bold"),
+                                width=max(100, width - 40), justify="center", tags="scene")
+        self.draw_extras()
+        self.finish_draw()
 
     def record_time(self, milliseconds):
         """Store a finished round's time (rounded to whole ms) and return it."""
@@ -89,24 +93,27 @@ class ReactionTest(ttk.Frame):
         best, average = calculate_stats(self.times)
         saved = save_score(self.mode_name, best, average)
 
+        self.cancel_effects()
         for widget in self.winfo_children():
             widget.destroy()
-        box = ttk.Frame(self)   # centred however large the window is
+        box = ttk.Frame(self, style="Card.TFrame", padding=(48, 28))   # centred however large the window is
         box.place(relx=0.5, rely=0.5, anchor="center")
 
         lines = [f"Round {number}: {time} ms"
                  for number, time in enumerate(self.times, start=1)]  # list comprehension
         ttk.Label(box, text=f"{self.mode_name} Mode Complete!",
-                  font=("Arial", 18, "bold")).pack(padx=5, pady=10)
-        ttk.Label(box, text="\n".join(lines), justify="center").pack(padx=5, pady=5)
+                  style="CardTitle.TLabel").pack(padx=5, pady=(0, 12))
+        ttk.Label(box, text="\n".join(lines), justify="center",
+                  style="Card.TLabel").pack(padx=5, pady=5)
         ttk.Label(box, text=f"Best reaction time: {best} ms",
-                  font=("Arial", 14)).pack(padx=5, pady=5)
+                  style="CardHeading.TLabel").pack(padx=5, pady=(12, 2))
         ttk.Label(box, text=f"Average reaction time: {average} ms",
-                  font=("Arial", 14)).pack(padx=5, pady=5)
+                  style="Stat.TLabel").pack(padx=5, pady=2)
         note = "Score added to the high scores." if saved else "Could not save the score file."
-        ttk.Label(box, text=note).pack(padx=5, pady=5)
+        ttk.Label(box, text=note, style="CardMuted.TLabel").pack(padx=5, pady=(8, 12))
 
-        ttk.Button(box, text="Play Again",
+        ttk.Button(box, text="Play Again", style="Accent.TButton", width=22, cursor="hand2",
                    command=lambda: self.container.change_state(self.program_state)
                    ).pack(padx=5, pady=5)
-        ttk.Button(box, text="Back to Menu", command=self.go_to_menu).pack(padx=5, pady=5)
+        ttk.Button(box, text="Back to Menu", width=22, cursor="hand2",
+                   command=self.go_to_menu).pack(padx=5, pady=5)

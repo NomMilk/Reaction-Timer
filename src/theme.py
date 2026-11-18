@@ -73,14 +73,16 @@ def draw_crosshair(canvas, x, y, color=None):
             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 canvas.create_line(x + dx * 5, y + dy * 5, x + dx * 16, y + dy * 16,
                                    fill=ink, width=width, capstyle="round", tags="crosshair")
-            radius = 1.5 + pad
         elif style == "Dot":
             radius = 3.5 + pad
+            canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
+                           fill=ink, outline=ink, tags="crosshair")
+
         else:
             canvas.create_oval(x - 11, y - 11, x + 11, y + 11,
                                outline=ink, width=width, tags="crosshair")
             radius = 2 + pad
-        canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
+            canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
                            fill=ink, outline=ink, tags="crosshair")
 
 
@@ -277,7 +279,7 @@ class CrosshairPicker(ttk.Frame):
         self.preview.pack(side="left", padx=(0, 16))
         controls = ttk.Frame(self, style="CardInner.TFrame")
         controls.pack(side="left")
-        ttk.Label(controls, text="Crosshair", style="MenuCardHeading.TLabel").pack(anchor="w", pady=(0, 0))
+        ttk.Label(controls, text="Crosshair", style="MenuCardHeading.TLabel").pack(anchor="w", pady=(0, 6))
         self.color_button = ttk.Button(controls, style="Menu.TButton", width=18, cursor="hand2",
                                        command=self.cycle_color)
         self.color_button.pack(pady=3)

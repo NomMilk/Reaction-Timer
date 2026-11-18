@@ -1,4 +1,5 @@
 import tkinter as tk
+import theme
 from highscore import Highscore
 from mainMenu import MainMenu
 from application import Application
@@ -25,6 +26,9 @@ class ReactionApp(tk.Tk):
         self.title("Reaction App")
         self.geometry("800x600")
         self.minsize(640, 480)
+
+        theme.apply_theme(self)
+
         self.fullscreen = False
         self.bind("<F11>", self.toggle_fullscreen)
         self.bind("<Escape>", self.exit_fullscreen)

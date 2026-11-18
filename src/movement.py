@@ -1,6 +1,7 @@
 import random
 import time
 from reactionTest import ReactionTest, ROUNDS
+import theme
 from programState import ProgramState
 
 CIRCLE_RADIUS = 20
@@ -31,14 +32,14 @@ class MovementMode(ReactionTest):
         if seconds_left == 0:
             self.start_round()
             return
-        self.draw_message("white", str(seconds_left), text_color="black")
+        self.draw_message(theme.GAME_BG, str(seconds_left))
         self.schedule(1000, lambda: self.run_countdown(seconds_left - 1))
 
     def start_round(self):
         """Show a blank area and pick a random delay before the circle appears."""
         self.phase = "waiting"
         self.info.config(text=f"Round {len(self.times) + 1} of {ROUNDS}")
-        self.draw_message("white", "")
+        self.draw_message(theme.GAME_BG, "")
         self.schedule(random.randint(1000, 4000), self.show_circle)
 
     def show_circle(self):
@@ -48,20 +49,21 @@ class MovementMode(ReactionTest):
         self.redraw()
         self.canvas.update_idletasks()   # make sure it is drawn before timing starts
         self.show_time = time.perf_counter()
+        x, y = self.circle_center()
+        self.spawn_ring(x, y, theme.CIRCLE_OUTLINE, CIRCLE_RADIUS, CIRCLE_RADIUS + 24, 400)
 
     def circle_center(self):
         """Return the circle's centre in pixels for the current canvas size."""
         return (self.circle_position[0] * self.canvas.winfo_width(),
                 self.circle_position[1] * self.canvas.winfo_height())
 
-    def redraw(self, event=None):
-        """Redraw the blank area, plus the circle when it is showing (also on resize)."""
-        super().redraw(event)
+    def draw_extras(self):
         if self.phase == "circle":
             x, y = self.circle_center()
             self.canvas.create_oval(x - CIRCLE_RADIUS, y - CIRCLE_RADIUS,
                                     x + CIRCLE_RADIUS, y + CIRCLE_RADIUS,
-                                    fill="green", outline="darkgreen")
+                                    fill=theme.CIRCLE, outline=theme.CIRCLE_OUTLINE, width=3,
+                                    tags="scene")
 
     def clicked_circle(self, event):
         """Return True if the click landed inside the circle."""
@@ -75,8 +77,9 @@ class MovementMode(ReactionTest):
             self.cancel_pending()
             self.phase = "too_soon"
             self.retry_countdown = was_countdown
-            self.draw_message("blue", "Too soon! Don't click until the circle appears. "
+            self.draw_message(theme.EARLY, "Too soon! Don't click until the circle appears. "
                                       "Click to try again.")
+            self.click_effect(event.x, event.y, "TOO SOON", theme.MISS)
         elif self.phase == "too_soon":
             if self.retry_countdown:
                 self.start_countdown()
@@ -86,10 +89,12 @@ class MovementMode(ReactionTest):
             if self.clicked_circle(event):
                 reaction = self.record_time((time.perf_counter() - self.show_time) * 1000)
                 self.phase = "pause"
-                self.draw_message("#444444", f"{reaction} ms")
+                self.draw_message(theme.GAME_BG, f"{reaction} ms")
+                self.click_effect(event.x, event.y, f"{reaction}ms", theme.HIT)
                 self.schedule(1200, self.next_step)
             else:
                 self.info.config(text="Missed! Click on the circle.")
+                self.click_effect(event.x, event.y, "MISS", theme.MISS)
 
     def next_step(self):
         """After the short pause, go to the next round or show the results."""
