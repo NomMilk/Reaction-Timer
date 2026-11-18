@@ -1,34 +1,36 @@
-import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showinfo
 from programState import ProgramState
 
+
 class Application(ttk.Frame):
-	def __init__(self, container):
-		super().__init__(container)
-		self.container = container
+    """The Modes menu: choose Normal or Movement mode."""
 
-		options = {'padx': 5, 'pady': 5}
+    def __init__(self, container):
+        super().__init__(container)
+        self.container = container
 
-		# label
-		self.label = ttk.Label(self, text='Modes')
-		self.label.pack(**options)
+        options = {'padx': 5, 'pady': 5}
 
-		# button
-		self.button = ttk.Button(self, text='Normal Mode')
-		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
-		self.button.pack(**options)
+        # inner frame stays centred however large the window is
+        inner = ttk.Frame(self)
+        inner.place(relx=0.5, rely=0.5, anchor='center')
 
-		self.button = ttk.Button(self, text='Movement Mode')
-		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
-		self.button.pack(**options)
+        ttk.Label(inner, text='Modes').pack(**options)
 
-		self.button = ttk.Button(self, text='Back')
-		self.button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
-		self.button.pack(**options)
+        normal_button = ttk.Button(inner, text='Normal Mode')
+        normal_button['command'] = lambda: self.button_clicked(ProgramState.Normal)
+        normal_button.pack(**options)
 
-		# show the frame on the container
-		self.pack(**options)
+        movement_button = ttk.Button(inner, text='Movement Mode')
+        movement_button['command'] = lambda: self.button_clicked(ProgramState.Movement)
+        movement_button.pack(**options)
 
-	def button_clicked(self, scene):
-		self.container.change_state(scene)
+        back_button = ttk.Button(inner, text='Back')
+        back_button['command'] = lambda: self.button_clicked(ProgramState.MainMenu)
+        back_button.pack(**options)
+
+        self.pack(fill='both', expand=True)
+
+    def button_clicked(self, scene):
+        """Ask the main window to switch to another screen."""
+        self.container.change_state(scene)

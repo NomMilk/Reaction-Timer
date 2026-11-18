@@ -1,8 +1,10 @@
 from enum import Enum, auto
 
+
 class ProgramState(Enum):
-        MainMenu = auto()
-        Application = auto()
-        Normal = auto()
-        Advance = auto()
-        Highscore = auto()
+    """Every screen the program can show."""
+    MainMenu = auto()
+    Application = auto()   # the "Modes" menu
+    Normal = auto()
+    Movement = auto()
+    Highscore = auto()

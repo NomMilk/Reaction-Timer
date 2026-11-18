@@ -1,30 +1,32 @@
-import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showinfo
 from programState import ProgramState
 
+
 class MainMenu(ttk.Frame):
-	def __init__(self, container):
-		super().__init__(container)
-		self.container = container
+    """The first screen: Start or view the high scores."""
 
-		options = {'padx': 5, 'pady': 5}
+    def __init__(self, container):
+        super().__init__(container)
+        self.container = container
 
-		# label
-		self.label = ttk.Label(self, text='Reaction Timer')
-		self.label.pack(**options)
+        options = {'padx': 5, 'pady': 5}
 
-		# button
-		self.button = ttk.Button(self, text='Start')
-		self.button['command'] = lambda: self.button_clicked(ProgramState.Application)
-		self.button.pack(**options)
+        # inner frame stays centred however large the window is
+        inner = ttk.Frame(self)
+        inner.place(relx=0.5, rely=0.5, anchor='center')
 
-		self.button = ttk.Button(self, text='Highscore')
-		self.button['command'] = lambda: self.button_clicked(ProgramState.Highscore)
-		self.button.pack(**options)
+        ttk.Label(inner, text='Reaction Timer', font=("Arial", 20, "bold")).pack(**options)
 
-		# show the frame on the container
-		self.pack(**options)
+        start_button = ttk.Button(inner, text='Start')
+        start_button['command'] = lambda: self.button_clicked(ProgramState.Application)
+        start_button.pack(**options)
 
-	def button_clicked(self, scene):
-		self.container.change_state(scene)
+        highscore_button = ttk.Button(inner, text='Highscore')
+        highscore_button['command'] = lambda: self.button_clicked(ProgramState.Highscore)
+        highscore_button.pack(**options)
+
+        self.pack(fill='both', expand=True)
+
+    def button_clicked(self, scene):
+        """Ask the main window to switch to another screen."""
+        self.container.change_state(scene)
