@@ -73,14 +73,16 @@ def draw_crosshair(canvas, x, y, color=None):
             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 canvas.create_line(x + dx * 5, y + dy * 5, x + dx * 16, y + dy * 16,
                                    fill=ink, width=width, capstyle="round", tags="crosshair")
-            radius = 1.5 + pad
         elif style == "Dot":
             radius = 3.5 + pad
+            canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
+                           fill=ink, outline=ink, tags="crosshair")
+
         else:
             canvas.create_oval(x - 11, y - 11, x + 11, y + 11,
                                outline=ink, width=width, tags="crosshair")
             radius = 2 + pad
-        canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
+            canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
                            fill=ink, outline=ink, tags="crosshair")
 
 
