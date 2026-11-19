@@ -11,8 +11,8 @@ reaction time!
 - A way to keep your high scores!
 
 ## Compilation/Building
-source ./venv/bin/activate
+source ./venv/bin/activate\
 pip install -r requirements.txt
 
-Then simply run below after moving the main directory!
+Then simply run below after moving the main directory!\
 pyinstaller --onefile --distpath="../dist" main.py
