@@ -3,6 +3,7 @@ This is a Project bulit for CPSC-223P.
 It is a Reaction trainer application written in python!
 This app is designed to help users improve their overall
 reaction time!
+<img src="screenshots/menu.png" width="500px">
 
 ## Features
 - Movement/Normal mode
@@ -10,5 +11,8 @@ reaction time!
 - A way to keep your high scores!
 
 ## Compilation/Building
+source ./venv/bin/activate
+pip install -r requirements.txt
 
-## Quick-start
+Then simply run below after moving the main directory!
+pyinstaller --onefile --distpath="../dist" main.py
