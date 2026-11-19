@@ -275,11 +275,11 @@ class Effects:
 class CrosshairPicker(ttk.Frame):
     def __init__(self, container):
         super().__init__(container, style="Card.TFrame", padding=(16, 12))
+        ttk.Label(self, text="Crosshair", style="MenuCardHeading.TLabel").pack(pady=(0, 6))
         self.preview = tk.Canvas(self, width=64, height=64, bg=SURFACE_ALT, highlightthickness=0)
         self.preview.pack(side="left", padx=(0, 16))
         controls = ttk.Frame(self, style="CardInner.TFrame")
-        controls.pack(side="left")
-        ttk.Label(controls, text="Crosshair", style="MenuCardHeading.TLabel").pack(anchor="w", pady=(0, 6))
+        controls.pack()
         self.color_button = ttk.Button(controls, style="Menu.TButton", width=18, cursor="hand2",
                                        command=self.cycle_color)
         self.color_button.pack(pady=3)
