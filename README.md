@@ -15,5 +15,5 @@ source ./venv/bin/activate\
 pip install -r requirements.txt
 
 Then simply run below after moving the main directory!\
-Linux: pyinstaller --onefile --distpath="../dist" main.py
+Linux: pyinstaller --onefile --distpath="../dist" main.py\
 Windows: pyinstaller --onefile --windowed --distpath="../dist" --add-data="fonts;fonts" main.py
