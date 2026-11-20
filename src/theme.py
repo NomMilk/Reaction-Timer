@@ -41,7 +41,14 @@ settings = {"color": "Blue", "style": "Cross"}
 
 FONT = "Helvetica"
 DISPLAY_FONT = "Orbitron"
-FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+
+if getattr(sys, "frozen", False):
+    FONT_DIR = os.path.join(sys._MEIPASS, "fonts")
+else:
+    FONT_DIR = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "fonts"
+    )
 
 if sys.platform == "win32":
     import ctypes
